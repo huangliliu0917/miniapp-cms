@@ -1,0 +1,62 @@
+<!--新闻列表页面模板-->
+<!--无图模式-->
+<template name="newsStyle0">
+    <navigator url="/pages/detail/detail?id={{ id }}">
+        <view class="news__item">
+            <view class="news__info">
+                <view class="news__title">{{ title }}</view>
+                <view class="news__desc">
+                    <text wx:if="{{ author }}" class="news__author">{{ author }}</text>
+                    <text class="news__time">{{ time }}</text>
+                </view>
+            </view>
+        </view>
+    </navigator>
+</template>
+<!--小图模式-->
+<template name="newsStyle1">
+    <navigator url="/pages/detail/detail?id={{ id }}">
+        <view class="news__item news__item_small">
+            <view class="news__thumb">
+                <image class="news__image" src="{{ images[0] }}"></image>
+            </view>
+            <view class="news__info">
+                <view class="news__title">{{ title }}</view>
+                <view class="news__desc">
+                    <text wx:if="{{ author }}" class="news__author">{{ author }}</text>
+                    <text class="news__time">{{ time }}</text>
+                </view>
+            </view>
+        </view>
+    </navigator>
+</template>
+<!--大图模式-->
+<template name="newsStyle2">
+    <navigator url="/pages/detail/detail?id={{ id }}">
+        <view class="news__item news__item_big">
+            <view class="news__info">
+                <view class="news__title">{{ title }}</view>
+            </view>
+            <view class="news__thumb">
+                <image class="news__image" src="{{ images[0] }}"></image>
+            </view>
+        </view>
+    </navigator>
+</template>
+<!--多图模式-->
+<template name="newsStyle3">
+    <navigator url="/pages/detail/detail?id={{ id }}">
+        <view class="news__item news__item_more">
+            <view class="news__info">
+                <view class="news__title">{{ title }}</view>
+            </view>
+            <view class="news__thumb">
+                <block wx:for="{{images}}" wx:key="key">
+                    <view class="news__image_list">
+                        <image class="news__image" src="{{ item }}"></image>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </navigator>
+</template>

@@ -1,0 +1,13 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/detail/detail"
+  ],
+  "window":{
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#ff7700",
+    "navigationBarTitleText": "中国好丝绸",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#fff"
+  }
+}

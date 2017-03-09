@@ -1,0 +1,30 @@
+@import "./utils/wxParse/wxParse.wxss";
+/**app.wxss**/
+.container {
+  padding: 0 10px;
+  min-height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
+  overflow: hidden;
+  line-height: 1.6;
+} 
+.tips {
+  font-size: 28rpx;
+  text-align: center;
+  padding: 50rpx;
+  color: #ccc;
+}
+
+.tips image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+}
+
+.tips image,
+.tips text {
+  vertical-align: middle;
+}
