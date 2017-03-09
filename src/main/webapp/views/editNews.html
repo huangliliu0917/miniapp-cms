@@ -1,0 +1,532 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>小程序管理平台 - 添加新闻</title>
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/layui/1.0.9/css/layui.css" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/css/main.css}" href="../resources/css/main.css" media="all"/>
+
+</head>
+<body>
+<!--/*@thymesVar id="user" type="com.huobanplus.miniapp.web.entity.User"*/-->
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-custom">
+        <div class="layui-main">
+            <a class="logo" href="javascript:;">
+                <img src="../resources/images/logo.png" alt="Logo" class="logo-image"/>
+                小程序 &centerdot; 管理平台
+            </a>
+            <ul class="layui-nav">
+                <li class="layui-nav-item layui-this">
+                    <a href="javascript:;">
+                        <!--如果有头像的话-->
+                        <img src="../resources/images/avatar.jpg" th:src="@{/resources/images/avatar.jpg}"
+                             class="img-avatar"/>
+                        <span th:text="${user.username}">Neo Chang</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="operateUser.html" th:href="@{/user/{id}(id=${user.id})}" target="_self">用户设置</a>
+                        </dd>
+                        <dd>
+                            <a href="../login.html" th:href="@{/logout}" target="_self">退出</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item  layui-nav-itemed">
+                    <a href="javascript:;">新闻管理</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="index.html" th:href="@{/index}" class="list-items">
+                                <i class="layui-icon">&#xe62d;</i>
+                                <cite>新闻列表</cite>
+                            </a>
+                        </dd>
+                        <dd class="layui-this">
+                            <a href="javascript:;" target="frameMain" class="list-items">
+                                <i class="layui-icon">&#xe61f;</i>
+                                <cite>添加新闻</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="operateUser.html" th:href="@{/user/{id}(id=${user.id})}" class="list-items">
+                                <i class="layui-icon">&#xe613;</i>
+                                <cite>用户设置</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <div class="layui-table-custom">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>添加新闻</legend>
+                <div class="layui-field-box">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新闻标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="newsTittle" lay-verify="required" autocomplete="off"
+                                       placeholder="请输入标题（必填）"
+                                       class="layui-input" th:value="${article.title}"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新闻作者</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="newsAuthor" autocomplete="off"
+                                       placeholder="请输入作者" class="layui-input" th:value="${article.author}"/>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">可选</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否置顶</label>
+                            <div class="layui-input-block layui-checkbox-custom">
+                                <input type="checkbox" name="isBanner" lay-skin="switch" value="1" lay-text="是|否"
+                                       th:checked="${article.topHead}"/>
+                                <div class="layui-word-aux">以轮播图形式使用最新的前五条展示</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新闻类型</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="newsType" value="1" title="小图" data-length="1"
+                                       th:checked="${article.layoutCode==1}"/>
+                                <input type="radio" name="newsType" value="2" title="大图" data-length="1"
+                                       th:checked="${article.layoutCode==2}"/>
+                                <input type="radio" name="newsType" value="3" title="多图" data-length="3"
+                                       th:checked="${article.layoutCode==3}"/>
+                                <input type="radio" id="noneImage" name="newsType" value="0" title="无图"
+                                       data-length="0" th:checked="${article.layoutCode==0}"/>
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">布局结构</label>
+                            <div class="layui-input-block">
+                                <ul class="newsType-list">
+                                    <li th:class="${article.layoutCode}==1?'list-items show':'list-items'"
+                                        class="list-items show" data-id="1">
+                                        <img th:src="@{/resources/images/small.png}"
+                                             src="../resources/images/small.png"/>
+                                    </li>
+                                    <li th:class="${article.layoutCode}==2?'list-items show':'list-items'"
+                                        class="list-items" data-id="2">
+                                        <img th:src="@{/resources/images/big.png}" src="../resources/images/big.png"/>
+                                    </li>
+                                    <li th:class="${article.layoutCode}==3?'list-items show':'list-items'"
+                                        class="list-items" data-id="3">
+                                        <img th:src="@{/resources/images/more.png}" src="../resources/images/more.png"/>
+                                    </li>
+                                    <li th:class="${article.layoutCode}==0?'list-items show':'list-items'"
+                                        class="list-items" data-id="0">
+                                        <img th:src="@{/resources/images/none.png}" src="../resources/images/none.png"/>
+                                    </li>
+                                </ul>
+                                <blockquote class="layui-elem-quote">支持格式 *.png *.jpg *.jpeg，推荐尺寸 480x270 （相似比例尺寸）
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">展示图片</label>
+                            <div class="layui-input-block" id="layui-mainUpload">
+                                <!--阻止按钮点击-->
+                                <div id="js-coverUpload" style="display: block;"></div>
+                                <div id="js-imageUpload"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">原始图片</label>
+                            <div class="layui-input-block">
+                                <ul class="preview-list">
+                                    <li class="preview-list-item" th:each="img : ${article.previewImgs}">
+                                        <img th:src="${img}" src="../resources/images/placeholder.png"
+                                             class="MINI-Upload"
+                                             alt="Cover"/>
+                                        <button type="button"
+                                                class="layui-btn layui-btn-small layui-btn-danger MINI-Delete"><i
+                                                class="layui-icon">&#xe640;</i>
+                                        </button>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">新闻简介</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容（可选）" name="newsSummary" class="layui-textarea"
+                                          th:text="${article.summary}"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">新闻详情</label>
+                            <div class="layui-input-block">
+                                <script id="editor" type="text/plain"></script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline layui-input-submit-custom layui-input-no-left">
+                                <button class="layui-btn" lay-submit="" lay-filter="*">添&nbsp;&nbsp;&nbsp;&nbsp;加
+                                </button>
+                            </div>
+                            <div class="layui-input-inline layui-input-submit-custom">
+                                <button type="button" class="layui-btn layui-btn-primary" id="js-btn-preview">预&nbsp;&nbsp;&nbsp;&nbsp;览</button>
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-danger" id="js-btn-publish">立即发布
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+            <div id="js-previewBox">
+                <div id="previewBox"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-form/3.51/jquery.form.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/layui/1.0.9/lay/dest/layui.all.js"></script>
+<script src="http://resali.huobanplus.com/cdn/upload-file/4.0.10/jquery.uploadfile.min.js"></script>
+<script th:src="@{/resources/ueditor/ueditor.config.js}" src="../resources/ueditor/ueditor.config.js"></script>
+<script th:src="@{/resources/ueditor/ueditor.all.min.js}" src="../resources/ueditor/ueditor.all.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<script id="previewHtml" type="text/html">
+    <h3>{{ d.newsTittle }}</h3>
+    <div class="subtitle">
+        <span class="author">{{ d.newsAuthor }}</span>
+    </div>
+    <div class="news-wrapper">{{ d.editorValue }}</div>
+</script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    'use strict';
+
+    var content = /*[[${article.content}]]*/ "";
+    var isBanner = /*[[${article.topHead}]]*/ false;
+
+    var verify = {
+        required: [/[\S]+/, '必填项不能为空']
+        , phone: [/^1\d{10}$/, '请输入正确的手机号']
+        , email: [/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, '邮箱格式不正确']
+        , url: [/(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/, '链接格式不正确']
+        , number: [/^\d+$/, '只能填写数字']
+        , date: [/^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1]))*$/, '日期格式不正确']
+        , identity: [/(^\d{15}$)|(^\d{17}(x|X|\d)$)/, '请输入正确的身份证号']
+    };
+
+    /**
+     * 初始化富文本
+     */
+
+    var ue = UE.getEditor('editor', {
+        initialFrameWidth: '100%',
+        initialFrameHeight: 500,
+        autoHeightEnabled: false,
+        elementPathEnabled: false,
+        serverUrl: "/ueditor/upload"
+    });
+
+    ue.ready(function () {
+        ue.setContent(content);
+    });
+
+    var laytpl = layui.laytpl,
+            form = layui.form();
+
+
+    /**
+     *  编辑页面预览，不提交
+     */
+    $('#js-btn-preview, #js-btn-publish').click(function () {
+        var stop = null;
+
+        $('input').each(function () {
+            var ver = $(this).attr('lay-verify');
+            var value = $(this).val();
+
+            if (ver && !verify[ver][0].test(value)) {
+                layer.msg(verify[ver][1], {
+                    icon: 5
+                    , shift: 6
+                });
+                $(this)[0].focus();
+
+                return stop = true;
+            }
+        });
+
+        if (stop) return false;
+
+        var content = ue.getContent();
+
+        if (!verify['required'][0].test(content)) {
+            layer.msg(verify['required'][1], {
+                icon: 5
+                , shift: 6
+            });
+            ue.focus();
+
+            return stop = true;
+        }
+
+        if (stop) return false;
+
+        POST_DATA.newsTittle = $('input[name="newsTittle"]').val();
+        POST_DATA.newsAuthor = $('input[name="newsAuthor"]').val();
+        POST_DATA.newsSummary = $('input[name="newsSummary"]').val();
+        POST_DATA.editorValue = content;
+
+        if ($(this).attr('id') == 'js-btn-preview') {
+            var getTpl = previewHtml.innerHTML;
+
+            laytpl(getTpl).render(POST_DATA, function (html) {
+                previewBox.innerHTML = html;
+            });
+
+            var clone = $('#js-previewBox').html();
+
+            layer.open({
+                type: 1,
+                title: '页面预览',
+                area: ['375px', '667px'],
+                content: clone
+            });
+        }
+        if ($(this).attr('id') == 'js-btn-publish') {
+            if (verifyType()) {
+                POST_DATA.isBanner = $('input[name="isBanner"]').is(':checked');
+                POST_DATA.code = 1;
+                POST_DATA.newsType = $('input[name="newsType"]:checked').val();
+                loading = layer.msg('图片上传中', {icon: 16, shade: 0.5});
+                if (!imageNumber) {
+                    POST_DATA.newsFiles = imageList;
+                    ajaxSubmitNews(OPER_News, POST_DATA, GOTO_PAGE);
+                } else {
+                    uploadObj.startUpload();
+                }
+            }
+        }
+    });
+
+    /**
+     * 上传功能
+     */
+    var imageUploadURL = /*[[@{/res/upload}]]*/ '../mock/uploadImage.json';
+    // 上传图片列表
+    var imageList = /*[[${article.newsFiles}]]*/ [];
+    // 图片可上传数量
+    var imageNumber = getNeedLength(parseInt($('input[name="newsType"]:checked').data('length')));
+    // loading 遮罩
+    var loading = null;
+    // 添加新闻接口
+    var OPER_News = /*[[@{/article/{id}(id=${article.id})}]]*/ '../mock/uploadImage.json';
+    // 跳转页面接口
+    var GOTO_PAGE = /*[[@{/index}]]*/ './index.html';
+    // 提交参数收集容器
+    var POST_DATA = {};
+    initIsBanner(isBanner);
+
+    function options(count) {
+        return {
+            url: imageUploadURL,
+            fileName: 'files',
+            uploadStr: '<span class="layui-upload-icon"><i class="layui-icon">&#xe61f;</i>上传图片</span>',
+            cancelStr: '<i class="layui-icon">&#xe640;</i>',
+            extErrorStr: '是无效格式, 允许上传文件的扩展名: ',
+            maxFileCountErrorStr: '是无效文件, 允许上传文件数量为: ',
+            uploadErrorStr: '文件超出上传数量',
+            sizeErrorStr: '是无效文件, 以免影响加载体验, 允许上传文件大小为',
+            dragDrop: false,
+            showStatusAfterSuccess: false,
+            allowedTypes: 'jpg,jpeg,png',
+            acceptFiles: 'image/',
+            autoSubmit: false,
+            showFileSize: false,
+            showFileCounter: false,
+            showPreview: true,
+            statusBarWidth: 192,
+            maxFileSize: 500*1024,
+            maxFileCount: count,
+            uploadQueueOrder: 'bottom',
+            onLoad: function () {
+                $('.ajax-file-upload').addClass('layui-btn layui-btn-primary file-upload-reset');
+            },
+            afterUploadAll: function (obj) {
+                layer.close(loading);
+                var data = obj.getResponses();
+                data.forEach(function (v, i) {
+                    imageList.push(v.data);
+                });
+
+                POST_DATA.newsFiles = imageList;
+                ajaxSubmitNews(OPER_News, POST_DATA, GOTO_PAGE);
+            },
+            onError: function (files, status, errMsg, pd) {
+                console.error(errMsg)
+            }
+        }
+    }
+    // TODO 暂时无法解决，初始化先为3
+    var uploadObj = $("#js-imageUpload").uploadFile(options(3));
+
+    /**
+     * checkbox操作与无图单选联动
+     */
+    form.on('switch', function (data) {
+        initIsBanner(data.elem.checked)
+    });
+
+    /**
+     *  初始化无图单选框
+     */
+    function initIsBanner(val) {
+        var len = $('input[name="newsType"]:checked').length;
+        if (val) {
+            $('#noneImage')
+                    .removeAttr('checked')
+                    .attr('disabled', true)
+                    .next()
+                    .addClass('layui-radio-disbaled layui-disabled')
+                    .removeClass('layui-form-radioed')
+                    .find('i').text('');
+            imageNumber = len === 0 ? 4 : imageNumber;
+        } else {
+            $('#noneImage')
+                    .attr('disabled', false)
+                    .next()
+                    .removeClass('layui-radio-disbaled layui-disabled');
+        }
+    }
+    /**
+     * radio操作与展示图联动
+     */
+
+    form.on('radio', function (data) {
+        var value = data.value;
+        var box = $('.newsType-list').find('.list-items');
+        box.each(function () {
+            if ($(this).data('id') == value) {
+                $(this).addClass('show').siblings().removeClass('show');
+            }
+        });
+        if (value == 1 || value == 2) {
+            imageNumber = getNeedLength(1);
+            if (imageNumber > 0) {
+                uploadObj.reset();
+                uploadObj = $("#js-imageUpload").uploadFile(options(imageNumber));
+                $('#js-coverUpload').hide();
+            } else {
+                $('#js-coverUpload').show();
+            }
+        }
+        if (value == 3) {
+            imageNumber = getNeedLength(3);
+            if (imageNumber > 0) {
+                uploadObj.reset();
+                uploadObj = $("#js-imageUpload").uploadFile(options(imageNumber));
+                $('#js-coverUpload').hide();
+            } else {
+                $('#js-coverUpload').show();
+            }
+        }
+        if (value == 0) {
+            imageNumber = getNeedLength(0);
+            $('#js-coverUpload').show();
+        }
+    });
+
+
+    form.on('submit(*)', function (data) {
+        POST_DATA = data.field;
+        if (verifyType()) {
+            loading = layer.msg('图片上传中', {icon: 16, shade: 0.5});
+            if (!imageNumber) {
+                POST_DATA.newsFiles = imageList;
+                ajaxSubmitNews(OPER_News, POST_DATA, GOTO_PAGE);
+            } else {
+                uploadObj.startUpload();
+            }
+
+        }
+        return false;
+    });
+
+
+    function verifyType() {
+        var len = $('.ajax-file-upload-statusbar').length;
+        if (len !== imageNumber) {
+            if (imageNumber === 4) {
+                layer.msg('请选择一个新闻类型', {icon: 2});
+            } else if (imageNumber < 0) {
+                layer.msg('超出该新闻类型<b style="color: #FF5722;"> ' + -imageNumber + ' </b>张展示图', {icon: 2});
+            } else {
+                layer.msg('该新闻类型需要<b style="color: #FF5722;"> ' + imageNumber + ' </b>张展示图', {icon: 2});
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function ajaxSubmitNews(postURL, postData, geToURL) {
+        $.ajax({
+            type: 'PUT',
+            url: postURL,
+            data: postData,
+            dataType: 'json',
+            success: function (data) {
+                if (data.resultCode !== 200) {
+                    layer.msg(res.resultMsg, {icon: 2});
+                    return false;
+                }
+                window.location.href = geToURL;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        });
+    }
+
+    function getNeedLength(need) {
+        return need - imageList.length;
+    }
+
+    $('.preview-list').on('click', '.MINI-Delete', function () {
+        var i = $('.preview-list').find('.MINI-Delete').index(this);
+        $(this).parent().remove();
+        imageList.splice(i, 1);
+        imageNumber = getNeedLength(parseInt($('input[name="newsType"]:checked').data('length')))
+        if (imageNumber > 0) {
+            $('#js-coverUpload').hide();
+        }
+    });
+    /*]]>*/
+</script>
+</html>

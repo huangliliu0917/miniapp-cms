@@ -1,0 +1,66 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <script src="../resources/js/jquery-2.1.3.min.js" th:src="@{/resources/js/jquery-2.1.3.min.js}"></script>
+</head>
+<body>
+
+title:<input type="text" id="title" /><br/>
+summary:<textarea id="summary" cols="30" rows="10"></textarea><br />
+
+<!-- 加载编辑器的容器 -->
+<script id="container" name="content" type="text/plain">
+        这里写你的初始化内容
+</script>
+
+<button id="saveArticle">保存</button>
+
+<!-- 配置文件 -->
+<script type="text/javascript" src="../resources/ueditor/ueditor.config.js" th:src="@{/resources/ueditor/ueditor.config.js}"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="../resources/ueditor/ueditor.all.js" th:src="@{/resources/ueditor/ueditor.all.js}"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('container',{
+        autoWidth:true
+    });
+
+    ue.ready(function() {
+        //设置编辑器的内容
+        ue.setContent('hello');
+        //获取html内容，返回: <p>hello</p>
+        var html = ue.getContent();
+        //获取纯文本内容，返回: hello
+        var txt = ue.getContentTxt();
+    });
+
+    $(document).ready(function(){
+        $("#saveArticle").click(function(){
+            var title = $("#title").val();
+            var summary = $("#summary").val();
+            var content = ue.getContent();
+            console.log(title);
+            console.log(summary);
+            console.log(content);
+
+            $.ajax({
+                url:"/article",
+                type:"POST",
+                data:{title:title,summary:summary,content:content},
+                success:function(resp){
+                    if(resp.resultCode == 200){
+                        console.log("success");
+                    }
+                },
+                error:function(resp){
+
+                }
+            })
+        });
+    });
+
+</script>
+</body>
+</html>

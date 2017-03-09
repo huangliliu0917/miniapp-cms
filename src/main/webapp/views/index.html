@@ -1,0 +1,259 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>小程序管理平台 - 首页</title>
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/layui/1.0.9/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="../resources/css/main.css" th:href="@{/resources/css/main.css}" media="all"/>
+
+
+</head>
+<body>
+<!--/*@thymesVar id="user" type="com.huobanplus.miniapp.web.entity.User"*/-->
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-custom">
+        <div class="layui-main">
+            <a class="logo" href="javascript:;">
+                <img src="../resources/images/logo.png" alt="Logo" class="logo-image"/>
+                小程序 &centerdot; 管理平台
+            </a>
+            <ul class="layui-nav">
+                <li class="layui-nav-item layui-this">
+                    <a href="javascript:;">
+                        <!--如果有头像的话-->
+                        <img src="../resources/images/avatar.jpg" th:src="${user.avatar}"
+                             class="img-avatar"/>
+                        <span th:text="${user.username}">Neo Chang</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="operateUser.html" th:href="@{/user/{id}(id=${user.id})}" target="_self">用户设置</a>
+                        </dd>
+                        <dd>
+                            <a href="../login.html" th:href="@{/logout}" target="_self">退出</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">新闻管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this">
+                            <a href="javascript:;" th:href="@{/index}" class="list-items">
+                                <i class="layui-icon">&#xe62d;</i>
+                                <cite>新闻列表</cite>
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="addNews.html" th:href="@{/article/add}" class="list-items" target="_self">
+                                <i class="layui-icon">&#xe61f;</i>
+                                <cite>添加新闻</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="operateUser.html" th:href="@{/user/{id}(id=${user.id})}" class="list-items"
+                               target="_self">
+                                <i class="layui-icon">&#xe613;</i>
+                                <cite>用户设置</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form th:action="@{/article}" method="post" id="articleForm">
+        <input type="hidden" name="pageIndex" th:value="${pageIndex}"/>
+        <input type="hidden" name="pageNum" th:value="${pageNum}"/>
+        <input type="hidden" name="pageSize" th:value="${pageSize}"/>
+        <div class="layui-body">
+            <div class="layui-table-custom">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>新闻列表</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-table-operate">
+                            <div class="layui-input-inline news-input-search">
+                                <input id="js-search" type="text" name="title" autocomplete="off"
+                                       placeholder="请输入标题关键字"
+                                       class="layui-input" th:value="${articleSearch.title}"/>
+                            </div>
+                            <button type="button" class="layui-btn news-btn-search" id="searchBtn"><i
+                                    class="layui-icon">&#xe615;</i></button>
+                            <button type="button" class="layui-btn" id="searchAll">显示所有</button>
+                            <a href="addNews.html" th:href="@{/article/add}" class="layui-btn news-btn-add"
+                               target="_self"><i class="layui-icon">
+                                &#xe61f;</i>&nbsp;添加新闻</a>
+                        </div>
+                        <div class="layui-table-wrapper">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="30%"/>
+                                    <col width="20%"/>
+                                    <col width="10%"/>
+                                    <col width="10%"/>
+                                    <col width="10%"/>
+                                    <col/>
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>简介</th>
+                                    <th>作者</th>
+                                    <th>时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="article,articleStat:${articleList}">
+                                    <td class="newsTable-title">
+                                        <a th:href="@{/article/{id}(id=${article.id})}"
+                                           href="previewPage.html">
+                                            <span th:text="${article.title}">title</span>
+                                        </a>
+                                    </td>
+                                    <td th:text="${article.summary}">summary</td>
+                                    <td th:text="${article.author}">author</td>
+                                    <td th:text="${article.createTime}">2016-02-16 13:32:06</td>
+                                    <td th:text="${article.articleStatus.getName()}">status</td>
+                                    <td>
+                                        <span th:if="${article.articleStatus.getCode()}==0"><!--未发布按钮组-->
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-small"
+                                                    title="发布"
+                                                    onclick="operateArticle(this, 520, 1)"
+                                                    th:onclick="|operateArticle(this,'${article.id}', 1)|">
+                                                <i class="layui-icon">&#xe609;</i>
+                                                <span>发布</span>
+                                            </button>
+                                            <a th:href="@{/article/edit/{id}(id=${article.id})}"
+                                               class="layui-btn layui-btn-primary layui-btn-small"
+                                               title="编辑">
+                                                <i class="layui-icon">&#xe642;</i>
+                                                <span>编辑</span>
+                                            </a>
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-small"
+                                                    title="删除"
+                                                    onclick="operateArticle(this, 520, 0)"
+                                                    th:onclick="|operateArticle(this, ${article.id}, 0)|">
+                                                <i class="layui-icon">&#xe640;</i>
+                                                <span>删除</span>
+                                            </button>
+                                        </span>
+
+                                        <span th:if="${article.articleStatus.getCode()}==1"> <!--已发布按钮组-->
+                                             <button type="button" class="layui-btn layui-btn-primary layui-btn-small"
+                                                     title="下架"
+                                                     onclick="operateArticle(this, 520, 2)"
+                                                     th:onclick="|operateArticle(this, ${article.id}, 2)|">
+                                                 <i class="layui-icon">&#xe601;</i>
+                                                 <span>下架</span>
+                                             </button>
+                                        </span>
+
+                                        <a th:href="@{/article/{id}(id=${article.id})}"
+                                           class="layui-btn layui-btn-primary layui-btn-small"
+                                                title="查看">
+                                            <i class="layui-icon">&#xe632;</i>
+                                            <span>查看</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="page-navigator" class="layui-pageNav-custom"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+<script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/layui/1.0.9/lay/dest/layui.all.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    // curr 当前页面
+    var curr = /*[[${pageIndex}]]*/ 1;
+    // pages 总数
+    var pages = /*[[${pageNum}]]*/ 15;
+
+    var laypage = layui.laypage;
+
+    laypage({
+        cont: 'page-navigator',
+        curr: curr,
+        pages: pages,
+        skip: true,
+        jump: function (obj, first) {
+            var curr = obj.curr;
+            $("input[name='pageIndex']").val(curr);
+            if (!first) {
+                $("#articleForm").submit();
+            }
+        }
+    });
+
+    $("#searchBtn").click(function () {
+        $("input[name='pageIndex']").val(1);
+        $("#articleForm").submit();
+    });
+
+    $("#searchAll").click(function () {
+        $("input[name='pageIndex']").val(1);
+        $("input[name='title']").val("");
+        $("#articleForm").submit();
+    });
+
+
+    function operateArticle(ele, id, code) {
+        var URL = '/article/operate/' + id + '?code=' + code;
+        var msg = $(ele).attr('title');
+
+        layer.confirm('你是否要' + msg + '该条新闻？', {
+            btn: ['确定', '取消']
+        }, function () {
+            ajaxOperate(URL)
+        });
+    }
+
+    function ajaxOperate(operateURL) {
+        $.ajax({
+            type: 'GET',
+            url: operateURL,
+            dataType: 'json',
+            success: function (data) {
+                if (data.resultCode !== 200) {
+                    layer.msg(data.resultMsg, {icon: 2});
+                    return false;
+                }
+                $("#articleForm").submit();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                layer.msg(errorThrown, {icon: 2});
+            }
+        })
+    }
+    /*]]>*/
+</script>
+</html>
