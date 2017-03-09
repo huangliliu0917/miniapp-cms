@@ -22,10 +22,10 @@
 
 部分结构
 ```
-    └── pages // 页面资源
-        └── index // 起始页模块
-        └── common // 列表模板
-        └── detail // 详情页模块
-    └── utils // 工具库
-        └── wxParse // 富文本转换为 wxml
+└── pages // 页面资源
+    └── index // 起始页模块
+    └── common // 列表模板
+    └── detail // 详情页模块
+└── utils // 工具库
+    └── wxParse // 富文本转换为 wxml
 ```
