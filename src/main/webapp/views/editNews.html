@@ -11,7 +11,7 @@
 
     <title>小程序管理平台 - 添加新闻</title>
 
-    <link rel="stylesheet" href="../resources/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui/css/layui.css}" href="../resources/layui/css/layui.css" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/css/main.css}" href="../resources/css/main.css" media="all"/>
 
 </head>
@@ -210,13 +210,13 @@
 </div>
 
 </body>
-<script src="../resources/js/jquery.min.js"></script>
-<script src="../resources/js/jquery.form.min.js"></script>
-<script src="../resources/layui/lay/dest/layui.all.js"></script>
-<script src="../resources/js/jquery.uploadfile.min.js"></script>
+<script th:src="@{/resources/js/jquery.min.js}" src="../resources/js/jquery.min.js"></script>
+<script th:src="@{/resources/js/jquery.form.min.js}" src="../resources/js/jquery.form.min.js"></script>
+<script th:src="@{/resources/layui/lay/dest/layui.all.js}" src="../resources/layui/lay/dest/layui.all.js"></script>
+<script th:src="@{/resources/js/jquery.uploadfile.min.js}" src="../resources/js/jquery.uploadfile.min.js"></script>
 <script th:src="@{/resources/ueditor/ueditor.config.js}" src="../resources/ueditor/ueditor.config.js"></script>
 <script th:src="@{/resources/ueditor/ueditor.all.min.js}" src="../resources/ueditor/ueditor.all.min.js"></script>
-<script src="../resources/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script th:src="@{/resources/ueditor/lang/zh-cn/zh-cn.js}" src="../resources/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script id="previewHtml" type="text/html">
     <h3>{{ d.newsTittle }}</h3>
     <div class="subtitle">
